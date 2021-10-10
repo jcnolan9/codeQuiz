@@ -1,3 +1,5 @@
+
+//This is an object with my questions and their multiple choice answers 
 var questionObject = {
     0: {
             "A ___ loop is a loop that executes a pre-defined number of times.": 
@@ -16,6 +18,8 @@ var questionObject = {
             ["click whisperer", "event listener", "click detector", "event ear"]
         }
 } 
+
+//All global variables
 var correctAnswers = ["for", "<ul>", "selector", "event listener"];
 var askedQuestions = [];
 var currentQuestionObject;
@@ -32,29 +36,22 @@ var buttonA;
 var buttonB;
 var buttonC;
 var buttonD;
-
-// var answerA = document.querySelector("#a");
-// var answerB = document.querySelector("#b");
-// var answerC = document.querySelector("#c");
-// var answerD = document.querySelector("#d");
-// var showCorrect = document.querySelector("#instructions");
-
 var chosenAnswer;
 
+//the countdown function will end the game if it reaches zero. The timer clears if all the questions are answered before it hits zero
 function countdown() {
     timeLeft = 60;
 
     var timer = setInterval(function () {
         var timerEl = document.querySelector("#timer");
-       // console.log(timerText);
+       
         timerEl.textContent = "Timer: " + timeLeft;
-        //console.log("New timer text: " + timerText);
-        // console.log(timeLeft);
+        
         timeLeft--;
         if(timeLeft < 0) {
             clearInterval(timer);
             document.querySelector("h1").textContent = "Time is Up!"
-            // console.log("Time is Up!")
+            
             endTheGame();
         }
         else if(numQuestionsAnswered == 4) {
@@ -63,22 +60,12 @@ function countdown() {
     }, 1000);
 }
 
+//selects the next question from the questionObject and returns the question text 
 function pickQuestion() {
-    // var rand = Math.floor(Math.random()*4)
-    
-    // var questionNumKey = Object.keys(questionObject)[rand];
-
     currentQuestionObject = questionObject[questionNumber];
     console.log(currentQuestionObject);
     console.log(currentQuestionObject[0])
-    // questionObjectNum = Object.keys(questionObject)[rand];
-    // // console.log(questionObjectNum)
-    // questionTextKey = Object.keys(questionObject[rand]);
-    // console.log(currentQuestionObject);
-    // console.log(questionTextKey);
-
-    // console.log("Question key #: " + Object.keys(questionObject)[rand]);
-    // console.log(questionObject[rand].questionTextKey)
+    
 
 
     currentKey = Object.keys(questionObject)[questionNumber];
@@ -89,6 +76,7 @@ function pickQuestion() {
     return questionTextKey;
 }
 
+//this function is responsible for updating the page to show the next question and update the buttons with the correct answer choices
 function showQuestion (a, b, c, d) {
     console.log("Number of questions amswered: " + numQuestionsAnswered)
     var questionEl = document.querySelector("#question");
@@ -102,24 +90,17 @@ function showQuestion (a, b, c, d) {
     d.textContent = "D) " + currentQuestionObject[questionTextKey][3];
 }
 
+//this function checks to see if the answer the user selected is correct. Whether correct or incorrect text is shown on the screen showing the
+//user if they were right or not. If they are wrong 10 seconds get deducted from the clock 
 function checkAnswer(choice, correctOrNot) {
     var choiceText = choice.textContent;
-    // console.log(typeof(choiceText));
+    
     var stripText = choiceText.substring(3);
-    // console.log(stripText);
-
-    // console.log(questionObjectNum)
-    // console.log("Correct answer: " + correctAnswers[0])
-    // console.log("Strip text: " + stripText)
-    // console.log("Strip text == correctAnswers[0]: " + (stripText==correctAnswers[0]))
-
-  
-
     switch (currentKey) {
         case "0":
             if(stripText == correctAnswers[0]) {
                 correctCount++;
-                // console.log("correct answer");
+                
                 correctOrNot.textContent = "Correct";
             }
             else {
@@ -130,7 +111,7 @@ function checkAnswer(choice, correctOrNot) {
         case "1":
             if(stripText == correctAnswers[1]) {
                 correctCount++;
-                // console.log("correct answer");
+                
                 correctOrNot.textContent = "Correct";
             }
             else {
@@ -141,7 +122,7 @@ function checkAnswer(choice, correctOrNot) {
         case "2":
             if(stripText == correctAnswers[2]) {
                 correctCount++;
-                // console.log("correct answer");
+                
                 correctOrNot.textContent = "Correct";
             }
             else {
@@ -152,7 +133,7 @@ function checkAnswer(choice, correctOrNot) {
         case "3":
             if(stripText == correctAnswers[3]) {
                 correctCount++;
-                // console.log("correct answer");
+                
                 correctOrNot.textContent = "Correct";
                 timeLeft -= 10;
             }
@@ -164,10 +145,13 @@ function checkAnswer(choice, correctOrNot) {
     }
 }
 
+//if the game has ended due to clock running out or user answering all questions then the app transitions to the user submiting initials and then 
+//goes to the high score screen 
 function endTheGame() {
     setTimeout(function () {
         questionH2.textContent = "Quiz Over!"
 
+        //remove buttom elements and <p> for showing correct/incorrect
         myPtag.remove();
         buttonA.remove();
         buttonB.remove();
@@ -198,7 +182,8 @@ function endTheGame() {
         document.querySelector("#intials-label").append(formInput);
         document.querySelector("#submit-score").append(submitBtn);
 
-
+        //when the user clicks the submit button remove the uneeded HTML elements, create new ones, and update the high scores array from 
+        //local storage 
         document.addEventListener("click", function (event) {
             var initials;
             event.preventDefault();
@@ -207,7 +192,7 @@ function endTheGame() {
                 initials =  formInput.value;
                 console.log(initials);
 
-                //this will need to be saved to local storage
+                
                 var latestScore = (initials + " - " + correctCount)
                 
                 
@@ -225,7 +210,7 @@ function endTheGame() {
                 localStorage.setItem("highScores", JSON.stringify(highScores));
                 console.log("high scores array: " + highScores);
 
-                //how do I add to local storage and not overwrite? 
+               
                 
                 questionH2.textContent = "High Scores";
                 
@@ -245,24 +230,7 @@ function endTheGame() {
                 var clearScoresBtn = document.createElement("button");
                 clearScoresBtn.setAttribute("id", "clear");
                 
-                //how do I read from local storage? 
-                // var oldHighScore = localStorage.getItem(highScores);
-                // var dashCharacter;
-                // for(var i =0; i < highScores.length; i++) {
-                //     if(highScores.charAt(i) == "-") {
-                //         dashCharacter = i;
-                //     }
-                // }
-                // var oldHighScoreNumStart = dashCharacter + 2;
-
-
-                // if(latestScore > oldHighScore) {
-                //     localStorage.setItem(highScores, latestScore);
-                //     newListItem.textContent = latestScore;
-                // }
-
-                // console.log(JSON.parse(localStorage.getItem("highScores")));
-                // newListItem.textContent = JSON.parse(localStorage.getItem("highScores"));
+            
 
                 goBackBtn.textContent = "Go Back";
                 clearScoresBtn.textContent = "Clear High Scores";
@@ -279,19 +247,19 @@ function endTheGame() {
                 document.querySelector("#content").append(goBackBtn);
                 document.querySelector("#content").append(clearScoresBtn);
 
+
+                //delete the local storage if user selects this option
                 document.addEventListener("click", function(event) {
                     if(event.target.id == "clear") {
                         console.log("Clearing high scores");
                         highScoreList.remove();
-                        // for(var x = 0; x < highScores.length; x++) {
-                        //     // console.log(document.querySelectorAll("li"));
-                        //     // document.querySelectorAll("li")[i].remove();
-                        // }
+                       
                         highScores = [];
                         localStorage.setItem("highScores", JSON.stringify(highScores));
                     }
                 })
 
+                //refresh the screen to go back to the original start page 
                 document.addEventListener("click", function (event) {
                     if(event.target.id == "go-back") {
                         this.location.reload();
@@ -302,10 +270,11 @@ function endTheGame() {
     }, 2000);
 }
 
+//this function changes from the start page to the showing the questions and their answers on the buttons. 
 function changeToQuestions() {
     questionH2 = document.querySelector("h2")
     questionH2.setAttribute("id", "question");
-    // console.log(questionH2);
+  
 
     var instructPtag = document.querySelector("#instructions");
     instructPtag.remove();
@@ -314,14 +283,14 @@ function changeToQuestions() {
     myPtag.setAttribute("id", "grade");
     myPtag.textContent = "";
     
-    // console.log("correct or not p tag: " + myPtag)
+    
 
 
     document.querySelector("#start-quiz").remove();
     
     buttonA = document.createElement("button")
     buttonA.setAttribute("id", "a")
-    // console.log(buttonA);
+    
     buttonB = document.createElement("button")
     buttonB.setAttribute("id", "b")
     buttonC = document.createElement("button")
@@ -342,7 +311,7 @@ function changeToQuestions() {
     countdown();
 
     if(numQuestionsAnswered > Object.keys(questionObject).length) {
-        // submitInitials(); 
+        
 
         questionH2.textContent = "Quiz Over!"
         
@@ -373,18 +342,19 @@ function changeToQuestions() {
         document.querySelector("#intials-label").append(formInput);
     }
 
+    //adding event listeners to the answer choices. Some code we only want to execute while the user has not run out of questions to answer 
     document.addEventListener("click", function(event) {
         if(event.target.id == "a" || event.target.id == "b" || event.target.id == "c" || event.target.id == "d" 
         && numQuestionsAnswered < Object.keys(questionObject).length) {
-            // console.log(event.target);
+           
             console.log("a,b,c,d got clicked")
-            // console.log(event.target.id)
-            // console.log(event.target.textContent)
+            
             chosenAnswer = event.target;
-            // console.log(chosenAnswer);
+            
             checkAnswer(event.target, myPtag);
             numQuestionsAnswered++;
 
+            //determine whether or not to show more questions of end the game 
             if(numQuestionsAnswered < Object.keys(questionObject).length) {
                 console.log("this logic executes");
                 setTimeout(function () {
@@ -405,93 +375,3 @@ document.querySelector("#start-quiz").addEventListener("click", function () {
     
     changeToQuestions();
 })
-
-
-// function playQuizGame() {
-//     countdown();
-//     showQuestion();
-// }
-
-
-// answerB.addEventListener("click", function(event) {
-//     chosenAnswer = event.target;
-//     console.log(chosenAnswer);
-//     checkAnswer(event.target);
-//     if(numQuestionsSeen < Object.keys(questionObject).length ) {
-//         setTimeout(function () {
-//             showQuestion();
-//         }, 2000);
-//     }
-// });
-// answerC.addEventListener("click", function(event) {
-//     chosenAnswer = event.target;
-//     console.log(chosenAnswer);
-//     checkAnswer(event.target);
-//     if(numQuestionsSeen < Object.keys(questionObject).length ) {
-//         setTimeout(function () {
-//             showQuestion();
-//         }, 2000);
-//     }
-// });
-// answerD.addEventListener("click", function(event) {
-//     chosenAnswer = event.target;
-//     console.log(chosenAnswer);
-//     checkAnswer(event.target);
-//     if(numQuestionsSeen < Object.keys(questionObject).length ) {
-//         setTimeout(function () {
-//             showQuestion();
-//         }, 2000);
-//     }
-// });
-
-// for(var i =0;  i < Object.keys(questionObject).length; i++) {
-//     playQuizGame();
-// }
-
-//playQuizGame();
-
-
-
-
-
-// console.log(questionObject);
-// console.log(Object.keys(questionObject[0]));
-
-// pickQuestion();
-// pickQuestion();
-// pickQuestion();
-// pickQuestion();
-// pickQuestion();
-
-/*
-if (numQuestionsSeen ==1) {
-        askedQuestions.push(rand);
-        numQuestionsSeen++;
-    }
-    else{
-        var numbersToCheck = askedQuestions.length;
-
-        // while(rand == askedQuestions[0] || rand == askedQuestions[1] || rand == askedQuestions[2] ||
-        // rand == askedQuestions[3])
-        for(var i = 0; i < askedQuestions.length; i++) {
-            if(i=0) {
-                while(rand == askedQuestions[i]) {
-                    rand = Math.floor(Math.random()*4);
-                }
-            } else if(i > 0) {
-                for(var j = i; i >= 0; i--) {
-                    while(rand == askedQuestions[j]) {
-                        rand = Math.floor(Math.random()*4;
-                    }
-                }
-        }
-                    
-                }
-            } 
-        }
-
-        
-        askedQuestions.push(rand);
-        numQuestionsSeen++;
-    }
-*/
