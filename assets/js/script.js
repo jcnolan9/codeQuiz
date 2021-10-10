@@ -4,19 +4,19 @@ var questionObject = {
             ["while", "do while", "for", "more"]
         },
     1: {
-            "question 2": 
-            ["while", "do while", "for", "more"]
+            "A ___ tag is used to create an unordered list element in HTML": 
+            ["<p>", "<ol>", "<li>", "<ul>"]
         },
     2: {
-            "question 3": 
-            ["while", "do while", "for", "more"]
+            "In CSS the term ___ is used for indicating how to grab an element(s) from the HTML document": 
+            ["selector", "indicator", "identifier", "finder"]
         },
     3: {
-            "question 4": 
-            ["while", "do while", "for", "more"]
+            "In Javascript you can listen for clicks on the page by adding a(n) ___": 
+            ["click whisperer", "event listener", "click detector", "event ear"]
         }
 } 
-var correctAnswers = ["for", "more", "while", "do while"];
+var correctAnswers = ["for", "<ul>", "selector", "event listener"];
 var askedQuestions = [];
 var currentQuestionObject;
 var questionNumber = 0;
@@ -209,11 +209,23 @@ function endTheGame() {
 
                 //this will need to be saved to local storage
                 var latestScore = (initials + " - " + correctCount)
-                highScores.push(latestScore);
-                console.log("Adding high score: " + highScores);
+                
+                
+                var highScoresLocal = JSON.parse(localStorage.getItem("highScores"));
+                console.log(highScoresLocal);
+
+                if(highScoresLocal == null) {
+                    highScores = [];
+                    highScores.push(latestScore);
+                }
+                else {
+                    highScores = highScoresLocal;
+                    highScores.push(latestScore);
+                }
+                localStorage.setItem("highScores", JSON.stringify(highScores));
+                console.log("high scores array: " + highScores);
 
                 //how do I add to local storage and not overwrite? 
-                localStorage.setItem("highScores", highScores);
                 
                 questionH2.textContent = "High Scores";
                 
@@ -223,11 +235,9 @@ function endTheGame() {
                 submitBtn.remove();
                 myForm.remove();
 
-                var highScoreList = document.createElement("ol");
+                var highScoreList = document.createElement("ul");
                 highScoreList.setAttribute("id", "high-score-list");
-                
-                //probably should be called Previous high score list 
-                var newListItem = document.createElement("li");
+            
 
                 var goBackBtn = document.createElement("button");
                 goBackBtn.setAttribute("id", "go-back");
@@ -236,23 +246,49 @@ function endTheGame() {
                 clearScoresBtn.setAttribute("id", "clear");
                 
                 //how do I read from local storage? 
-                newListItem.textContent = latestScore; 
-                
-               
+                // var oldHighScore = localStorage.getItem(highScores);
+                // var dashCharacter;
+                // for(var i =0; i < highScores.length; i++) {
+                //     if(highScores.charAt(i) == "-") {
+                //         dashCharacter = i;
+                //     }
+                // }
+                // var oldHighScoreNumStart = dashCharacter + 2;
+
+
+                // if(latestScore > oldHighScore) {
+                //     localStorage.setItem(highScores, latestScore);
+                //     newListItem.textContent = latestScore;
+                // }
+
+                // console.log(JSON.parse(localStorage.getItem("highScores")));
+                // newListItem.textContent = JSON.parse(localStorage.getItem("highScores"));
+
                 goBackBtn.textContent = "Go Back";
                 clearScoresBtn.textContent = "Clear High Scores";
 
 
                 document.querySelector("#content").append(highScoreList);
-                document.querySelector("#high-score-list").append(newListItem);
+               
+                for(var i = 0; i < highScores.length; i++) {
+                    var newListItem = document.createElement("li");
+                    newListItem.textContent = highScores[i];
+                    document.querySelector("#high-score-list").append(newListItem);
+                }
+
                 document.querySelector("#content").append(goBackBtn);
                 document.querySelector("#content").append(clearScoresBtn);
 
                 document.addEventListener("click", function(event) {
                     if(event.target.id == "clear") {
                         console.log("Clearing high scores");
+                        highScoreList.remove();
+                        // for(var x = 0; x < highScores.length; x++) {
+                        //     // console.log(document.querySelectorAll("li"));
+                        //     // document.querySelectorAll("li")[i].remove();
+                        // }
                         highScores = [];
-                        newListItem.remove();
+                        localStorage.setItem("highScores", JSON.stringify(highScores));
                     }
                 })
 
