@@ -1,0 +1,83 @@
+body {
+    display: flex;
+    justify-content: center;
+}
+
+h1 {
+    display: inline;
+    color: #03a1fc;
+}
+
+h2 {
+    color: #16679e;
+    margin-top: 40px;
+}
+
+.container {
+    /* margin-left: auto;
+    margin-right: auto; */
+    width: 20%;
+    position: relative;
+}
+
+#timer {
+    display: inline;
+    font-size: 2em;
+    position: relative;
+    top: 3%;
+    left: 46%;
+    color: white;
+    background-color: #9ed9af;
+    padding: 10px;
+    border-radius: 5px;
+    
+}
+
+/* section {
+    width: 80%;
+} */
+
+/* #instructions {
+    text-align: center;
+} */
+
+
+button {
+    background-color: #03a1fc;
+    border-radius: 5px;
+    color: white;
+    border-style: none;
+    padding: 10px;
+}
+
+button:hover {
+    background-color: #03588a;
+}
+
+#a, #b, #c, #d {
+    display: block;
+    margin-top: 5px;
+}
+
+#grade {
+    font-style: italic;
+    font-weight: bold;
+    color: #16679e;
+    font-size: 2em;
+}
+
+#submit {
+    margin-left: 5px;
+}
+
+#high-score-list {
+    background-color: #8dcbf0;
+}
+
+#go-back {
+    margin-right: 5px;
+}
+
+
+
+
